@@ -1,6 +1,6 @@
 // script.js
 let startTime, updatedTime, difference, tInterval, running = false;
-let hours = 0, minutes = 0, seconds = 0;
+let hours = 0, minutes = 0, seconds = 0, milliseconds = 0;
 let lapCount = 0;
 
 const display = document.getElementById('display');
@@ -14,8 +14,8 @@ document.getElementById('lap').addEventListener('click', recordLap);
 function startTimer() {
     if (!running) {
         running = true;
-        startTime = new Date().getTime();
-        tInterval = setInterval(getShowTime, 1);
+        startTime = new Date().getTime() - difference;
+        tInterval = setInterval(getShowTime, 10); // Update time every 10 milliseconds
     }
 }
 
@@ -27,8 +27,8 @@ function pauseTimer() {
 function resetTimer() {
     running = false;
     clearInterval(tInterval);
-    display.innerHTML = "00:00:00";
-    hours = 0; minutes = 0; seconds = 0;
+    difference = 0;
+    display.innerHTML = "00:00:00:00";
     laps.innerHTML = '';
     lapCount = 0;
 }
@@ -50,10 +50,12 @@ function getShowTime() {
     hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
     minutes = Math.floor((difference / (1000 * 60)) % 60);
     seconds = Math.floor((difference / 1000) % 60);
+    milliseconds = Math.floor((difference % 1000) / 10);
 
     hours = (hours < 10) ? "0" + hours : hours;
     minutes = (minutes < 10) ? "0" + minutes : minutes;
     seconds = (seconds < 10) ? "0" + seconds : seconds;
+    milliseconds = (milliseconds < 10) ? "0" + milliseconds : milliseconds;
 
-    display.innerHTML = hours + ":" + minutes + ":" + seconds;
+    display.innerHTML = hours + ":" + minutes + ":" + seconds + ":" + milliseconds;
 }
