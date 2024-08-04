@@ -1,5 +1,5 @@
 // script.js
-let startTime, updatedTime, difference, tInterval, running = false;
+let startTime, updatedTime, difference = 0, tInterval, running = false;
 let hours = 0, minutes = 0, seconds = 0, milliseconds = 0;
 let lapCount = 0;
 
@@ -20,8 +20,11 @@ function startTimer() {
 }
 
 function pauseTimer() {
-    running = false;
-    clearInterval(tInterval);
+    if (running) {
+        running = false;
+        clearInterval(tInterval);
+        difference = new Date().getTime() - startTime;
+    }
 }
 
 function resetTimer() {
@@ -59,3 +62,4 @@ function getShowTime() {
 
     display.innerHTML = hours + ":" + minutes + ":" + seconds + ":" + milliseconds;
 }
+
