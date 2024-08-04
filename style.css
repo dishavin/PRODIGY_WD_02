@@ -4,31 +4,60 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f0f0f0;
     margin: 0;
+    background: url('background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Arial', sans-serif;
 }
 
 .stopwatch {
     text-align: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
 }
 
 .display {
     font-size: 3rem;
     margin-bottom: 20px;
-    background-color: #333;
-    color: #fff;
     padding: 20px;
     border-radius: 10px;
+    background-color: #222;
+    color: #0f0;
 }
 
 .controls button {
-    font-size: 1rem;
+    font-size: 1.5rem;
     margin: 5px;
     padding: 10px 20px;
     cursor: pointer;
+    border: none;
+    background-color: #555;
+    color: #fff;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.controls button:hover {
+    background-color: #777;
+}
+
+.controls i {
+    pointer-events: none;
 }
 
 .laps {
     margin-top: 20px;
     text-align: left;
+    max-height: 200px;
+    overflow-y: auto;
 }
+
+.laps div {
+    background-color: #444;
+    padding: 5px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
