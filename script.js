@@ -1,65 +1,78 @@
-// script.js
-let startTime, updatedTime, difference = 0, tInterval, running = false;
-let hours = 0, minutes = 0, seconds = 0, milliseconds = 0;
-let lapCount = 0;
+let startBtn = document.getElementById('start');
+let stopBtn = document.getElementById('stop');
+let resetBtn = document.getElementById('reset');
 
-const display = document.getElementById('display');
-const laps = document.getElementById('laps');
+let hour = 00;
+let minute = 00;
+let second = 00;
+let count = 00;
 
-document.getElementById('start').addEventListener('click', startTimer);
-document.getElementById('pause').addEventListener('click', pauseTimer);
-document.getElementById('reset').addEventListener('click', resetTimer);
-document.getElementById('lap').addEventListener('click', recordLap);
+startBtn.addEventListener('click', function () {
+    timer = true;
+    stopWatch();
+});
 
-function startTimer() {
-    if (!running) {
-        running = true;
-        startTime = new Date().getTime() - difference;
-        tInterval = setInterval(getShowTime, 10); // Update time every 10 milliseconds
+stopBtn.addEventListener('click', function () {
+    timer = false;
+});
+
+resetBtn.addEventListener('click', function () {
+    timer = false;
+    hour = 0;
+    minute = 0;
+    second = 0;
+    count = 0;
+    document.getElementById('hr').innerHTML = "00";
+    document.getElementById('min').innerHTML = "00";
+    document.getElementById('sec').innerHTML = "00";
+    document.getElementById('count').innerHTML = "00";
+});
+
+function stopWatch() {
+    if (timer) {
+        count++;
+
+        if (count == 100) {
+            second++;
+            count = 0;
+        }
+
+        if (second == 60) {
+            minute++;
+            second = 0;
+        }
+
+        if (minute == 60) {
+            hour++;
+            minute = 0;
+            second = 0;
+        }
+
+        let hrString = hour;
+        let minString = minute;
+        let secString = second;
+        let countString = count;
+
+        if (hour < 10) {
+            hrString = "0" + hrString;
+        }
+
+        if (minute < 10) {
+            minString = "0" + minString;
+        }
+
+        if (second < 10) {
+            secString = "0" + secString;
+        }
+
+        if (count < 10) {
+            countString = "0" + countString;
+        }
+
+        document.getElementById('hr').innerHTML = hrString;
+        document.getElementById('min').innerHTML = minString;
+        document.getElementById('sec').innerHTML = secString;
+        document.getElementById('count').innerHTML = countString;
+        setTimeout(stopWatch, 10);
     }
 }
-
-function pauseTimer() {
-    if (running) {
-        running = false;
-        clearInterval(tInterval);
-        difference = new Date().getTime() - startTime;
-    }
-}
-
-function resetTimer() {
-    running = false;
-    clearInterval(tInterval);
-    difference = 0;
-    display.innerHTML = "00:00:00:00";
-    laps.innerHTML = '';
-    lapCount = 0;
-}
-
-function recordLap() {
-    if (running) {
-        lapCount++;
-        const lapTime = display.innerHTML;
-        const lapItem = document.createElement('div');
-        lapItem.textContent = `Lap ${lapCount}: ${lapTime}`;
-        laps.appendChild(lapItem);
-    }
-}
-
-function getShowTime() {
-    updatedTime = new Date().getTime();
-    difference = updatedTime - startTime;
-
-    hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-    minutes = Math.floor((difference / (1000 * 60)) % 60);
-    seconds = Math.floor((difference / 1000) % 60);
-    milliseconds = Math.floor((difference % 1000) / 10);
-
-    hours = (hours < 10) ? "0" + hours : hours;
-    minutes = (minutes < 10) ? "0" + minutes : minutes;
-    seconds = (seconds < 10) ? "0" + seconds : seconds;
-    milliseconds = (milliseconds < 10) ? "0" + milliseconds : milliseconds;
-
-    display.innerHTML = hours + ":" + minutes + ":" + seconds + ":" + milliseconds;
-}
-
